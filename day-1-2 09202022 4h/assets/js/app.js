@@ -24,10 +24,22 @@ var selectedPriceElement = document.getElementById('selected-price');
 var dataElement = document.getElementById('data');
 
 
+
+var keyWordsValue='';
+var countryValue = 0;
+var SelectedPrice = getMaxPrice();
+
+
+
 searchByKeywordsElement.addEventListener('keyup',function(event){
     const value = event.target.value;
 
-    console.log(value);
+    keyWordsValue = value;
+
+    showDATA();
+
+
+
 })
 
 
@@ -35,18 +47,34 @@ countriesElement.addEventListener('change',function(event){
     const value = event.target.value;
 
     console.log(value);
+
+    countryValue = value;
+
+    showDATA();
+    
+
 })
 
+
+
+function getMaxPrice(){
+    let max = 0;
+
+    vols.map( (v)=>{  if( v.prix > max ) { max = v.prix } } );
+    
+    return max;
+}
 
 
 priceElement.addEventListener('change',function(event){
     const value = Number(event.target.value);
 
- 
-    let max = 0;
 
-    vols.map( (v)=>{  if( v.prix > max ) { max = v.prix } } );
+    console.log(value);
 
+    let max = getMaxPrice();
+
+  
     // 100  max
     // val  ? 
 
@@ -55,6 +83,11 @@ priceElement.addEventListener('change',function(event){
     console.log(res);
 
     selectedPriceElement.innerHTML=res+'$';
+
+    SelectedPrice = res;
+
+    showDATA();
+    
 })
 
 
@@ -90,7 +123,19 @@ function  showDATA(){
 
     let blocHTML = '';
 
-    vols.map( (vol)=>{
+    vols.filter( v =>
+
+        (  v.name.toLowerCase().indexOf( keyWordsValue.toLowerCase() ) != -1   )
+
+        &&
+
+        ( v.start == countryValue )
+
+        &&
+
+        ( v.prix <= SelectedPrice )
+
+    )  .map( (vol)=>{
         blocHTML = blocHTML + `
         <div class="row mb-4">
                     <div class="card">
