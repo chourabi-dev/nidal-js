@@ -1,3 +1,4 @@
+import React from "react";
 import ArticleBlog from "./componenets/Article";
 import { ButtonLike } from "./componenets/ButtonLike";
 import Contact from "./componenets/Contact";
@@ -88,9 +89,32 @@ function App(){
 
 
 
-function App(){
-  return(
-    <div>
+
+
+
+export default class App extends React.Component{
+  constructor(props){
+    super(props); 
+    this.state  = {
+      dark : false
+    } 
+     
+
+    this.toggleMode = this.toggleMode.bind(this);
+
+  }
+
+
+
+  toggleMode(){
+    this.setState({ dark : ! this.state.dark })
+  }
+
+
+  render(){
+    return( 
+    
+    <div className= { this.state.dark === false ? 'light' : 'dark' } >
       
 
       <div className="menu">
@@ -100,13 +124,14 @@ function App(){
             </div>
 
             <div>
-              <ToggleButton   />
+              <ToggleButton   changeModeAction = { this.toggleMode }   />
             </div>
         </div>
       </div>
 
-    </div>
-  );
-}
+    </div>);
 
-export default App;
+
+
+  }
+}
